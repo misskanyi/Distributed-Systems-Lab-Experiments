@@ -63,7 +63,10 @@ public class _CalcStub extends org.omg.CORBA.portable.ObjectImpl implements Calc
   private void readObject (java.io.ObjectInputStream s) throws java.io.IOException
   {
      String str = s.readUTF ();
-     com.sun.corba.se.impl.orbutil.IORCheckImpl.check(str, "Calculator._CalcStub");
+     if (str == null || !str.startsWith ("IOR:"))
+     {
+       throw new java.io.IOException ("invalid IOR string in serialized stub");
+     }
      String[] args = null;
      java.util.Properties props = null;
      org.omg.CORBA.ORB orb = org.omg.CORBA.ORB.init (args, props);
