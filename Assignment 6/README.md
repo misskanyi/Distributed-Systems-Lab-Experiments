@@ -1,5 +1,7 @@
 # Assignment 6 — Mutual Exclusion (Token Ring)
 
+<!-- test edit -->
+
 Token ring based mutual exclusion using UDP `DatagramSocket`s. A token circulates
 between two client processes; whoever holds the token may enter the critical
 section (send data), then passes the token along.
