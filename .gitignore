@@ -1,0 +1,18 @@
+# Compiled class files
+*.class
+
+# Maven
+target/
+
+# CORBA ORB runtime state
+orb.db/
+
+# Generated classpath files
+cp.txt
+
+# OS/editor cruft
+.DS_Store
+*.log
+
+# Local run notes
+HOW TO RUN.md
