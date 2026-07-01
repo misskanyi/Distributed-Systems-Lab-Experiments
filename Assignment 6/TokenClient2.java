@@ -31,6 +31,7 @@ public class TokenClient2 {
 					System.out.println("ignorecase");
 					ser.setSendData = true;
 					ser.sendData();
+					hasToken = false;
 				} else if (str1.equalsIgnoreCase("no")) {
 					tkcl.sendData();
 					hasToken = false;
@@ -38,7 +39,7 @@ public class TokenClient2 {
 			} else {
 				System.out.println("entering recieving mode");
 				tkcl.recData();
-				hasToken = true;
+				hasToken = tkcl.hasToken;
 			}
 		}
 	}

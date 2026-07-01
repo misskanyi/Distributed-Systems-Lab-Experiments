@@ -89,6 +89,7 @@ public class Bully {
 					System.out.println("Which process will send message");
 					int mess = sc.nextInt();
 					Bully.mess(mess);
+					break;
 				}
 			}
 		} while (choice != 4);

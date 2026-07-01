@@ -56,6 +56,10 @@ public class Ring1 {
 				case 1:
 					System.out.println("\n Enter the Process number who initialsied election : ");
 					init = in.nextInt();
+					if (init < 0 || init >= num) {
+						System.out.println("\n invalid process number, must be between 0 and " + (num - 1) + "\n");
+						break;
+					}
 					temp2 = init;
 					temp1 = init + 1;
 					i = 0;
