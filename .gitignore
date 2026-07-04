@@ -16,3 +16,15 @@ cp.txt
 
 # Local run notes
 HOW TO RUN.md
+
+
+.cursor/
+.cursorrules
+.cursorignore
+.claude/
+CLAUDE.md
+.windsurf/
+.windsurfrules
+.aider*
+.continue/
+.github/copilot-instructions.md
