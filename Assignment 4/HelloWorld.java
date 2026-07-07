@@ -16,7 +16,7 @@ public class HelloWorld {
                 System.out.println("Received from process " + i + ": " + new String(message).trim());
             }
         } else {
-            // Worker process: send message to master
+            // Worker process: sendinng message to master
             char[] message = "Hello-Participants".toCharArray();
             char[] padded = new char[20];
             System.arraycopy(message, 0, padded, 0, message.length);
