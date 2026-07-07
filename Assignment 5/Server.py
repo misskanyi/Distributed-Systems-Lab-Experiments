@@ -1,11 +1,33 @@
+# ============================================================
+# Assignment 5: Berkeley Clock Synchronization - MASTER (server)
+# ------------------------------------------------------------
+# The master never trusts its own clock as "ground truth" (that
+# would be Cristian's algorithm). Instead, Berkeley's algorithm:
+#   1. Collects each slave's clock time and the offset from its
+#      own clock (time_difference = master_now - slave_time).
+#   2. Averages ALL those offsets (including its own, here
+#      implicitly 0 since the master doesn't send itself data).
+#   3. Broadcasts back "now + average_offset" to every slave so
+#      they all converge to roughly the same synchronized time.
+#
+# One thread accepts new slave connections, one thread per slave
+# keeps receiving its clock pings, and a separate thread runs
+# the sync cycle every 5 seconds - all concurrently.
+# ============================================================
+
 import threading
 import datetime
 import socket
 import time
 
+# Shared state: address -> {clock_time, time_difference, connector}
+# Updated by receiver threads, read by the sync thread.
 client_data = {}
 
 def startReceivingClockTime(connector, address):
+    # Runs forever in its own thread, one per connected slave.
+    # Every 5s (matching the client's send interval) we record
+    # how far off that slave's clock is from ours.
     while True:
         clock_time_string = connector.recv(1024).decode()
         clock_time = datetime.datetime.fromisoformat(clock_time_string)
@@ -21,6 +43,9 @@ def startReceivingClockTime(connector, address):
         time.sleep(5)
 
 def startConnecting(master_server):
+    # Runs forever accepting new slave connections. Each accepted
+    # slave gets its own dedicated receiver thread so slaves don't
+    # block each other.
     while True:
         master_slave_connector, addr = master_server.accept()
         slave_address = str(addr[0]) + ":" + str(addr[1])
@@ -33,6 +58,9 @@ def startConnecting(master_server):
         current_thread.start()
 
 def getAverageClockDiff():
+    # Core of Berkeley's algorithm: average every slave's clock
+    # offset from the master. This average becomes the correction
+    # applied to everyone (master included) when broadcasting.
     time_difference_list = list(
         client['time_difference']
         for client_addr, client in client_data.items())
@@ -44,6 +72,9 @@ def getAverageClockDiff():
     return average_clock_difference
 
 def synchronizeAllClocks():
+    # Runs forever, once every 5s: compute the average offset
+    # across all currently-connected slaves, then push each slave
+    # a synchronized time = master's current time + that offset.
     while True:
         print("New synchronization cycle started.")
         print("Number of clients to be synchronized: " + str(len(client_data)))
@@ -64,6 +95,9 @@ def synchronizeAllClocks():
         time.sleep(5)
 
 def initiateClockServer(port=2050):
+    # Bootstraps the master: open the listening socket, then
+    # launch the two background threads (accept-loop and
+    # sync-loop) that run for the lifetime of the process.
     master_server = socket.socket()
     master_server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     print("Socket at master node created successfully\n")
