@@ -9,6 +9,7 @@
 // Before running this, you must start the RMI registry:
 //      rmiregistry &
 // ============================================================
+//contains the actual code that performs the work.
 
 import java.rmi.*; // Naming
 

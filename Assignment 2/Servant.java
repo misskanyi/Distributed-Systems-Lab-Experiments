@@ -10,6 +10,7 @@
 //   receive remote calls (handles all the networking plumbing
 //   for us - sockets, marshalling, threads, etc.).
 // ============================================================
+//contains the actual code that performs the work.
 
 import java.rmi.*; // RemoteException
 import java.rmi.server.*; // UnicastRemoteObject

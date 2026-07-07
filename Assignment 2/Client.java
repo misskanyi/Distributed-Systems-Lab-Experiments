@@ -11,6 +11,7 @@
 //   3. Call concat(...) on it - this call goes over the network.
 //   4. Print the result returned by the server.
 // ============================================================
+//connects to the server, calls the remote method, and displays the result.
 
 import java.rmi.*; // Naming
 import java.util.Scanner;
