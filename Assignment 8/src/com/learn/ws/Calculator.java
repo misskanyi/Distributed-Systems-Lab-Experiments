@@ -29,4 +29,11 @@ public class Calculator {
 		}
 		return a / b;
 	}
+	@WebMethod(operationName = "modulo")
+public int modulo(@WebParam(name = "a") int a, @WebParam(name = "b") int b) {
+    if (b == 0) {
+        throw new ArithmeticException("Cannot modulo by zero");
+    }
+    return a % b;
+}
 }
