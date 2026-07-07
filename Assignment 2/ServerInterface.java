@@ -11,11 +11,11 @@
 //      (because anything sent over the network can fail)
 // ============================================================
 
-import java.rmi.*;
+import java.rmi.*; // Remote, RemoteException
 
-public interface ServerInterface extends Remote {
+public interface ServerInterface extends Remote { // Remote marks this as an RMI contract
     // Concatenate two strings on the SERVER and return the result.
     // Even though it looks like a normal Java call, it actually
     // travels across the network when the client invokes it.
-    String concat(String a, String b) throws RemoteException;
+    String concat(String a, String b) throws RemoteException; // every remote method must declare RemoteException
 }

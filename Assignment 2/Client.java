@@ -12,41 +12,41 @@
 //   4. Print the result returned by the server.
 // ============================================================
 
-import java.rmi.*;
+import java.rmi.*; // Naming
 import java.util.Scanner;
 
 public class Client {
     public static void main(String args[]) {
         try {
-            Scanner s = new Scanner(System.in);
+            Scanner s = new Scanner(System.in); // reads operator input from console
 
             // Step 1: Where is the server running?
             // Type "localhost" if it's on the same machine.
-            System.out.println("Enter the Server address: ");
-            String server = s.nextLine();
+            System.out.println("Enter the Server address: "); // prompt
+            String server = s.nextLine(); // e.g. "localhost"
 
             // Step 2: Ask the RMI Registry on that machine for
             // the object registered under the name "Server".
             // The URL form is:  rmi://<host>/<name-in-registry>
             // The cast to ServerInterface lets us call its methods.
-            ServerInterface si = (ServerInterface) Naming.lookup("rmi://" + server + "/Server");
+            ServerInterface si = (ServerInterface) Naming.lookup("rmi://" + server + "/Server"); // resolves stub
 
             // Step 3: Get the two inputs we want to concatenate.
-            System.out.println("Enter first string: ");
-            String first = s.nextLine();
-            System.out.println("Enter second string: ");
-            String second = s.nextLine();
+            System.out.println("Enter first string: "); // prompt
+            String first = s.nextLine(); // first operand
+            System.out.println("Enter second string: "); // prompt
+            String second = s.nextLine(); // second operand
 
             // Step 4: This LOOKS like a normal method call,
             // but it actually executes on the SERVER and
             // sends the result back to us.
-            System.out.println("Concatenated String: " + si.concat(first, second));
+            System.out.println("Concatenated String: " + si.concat(first, second)); // remote invocation + result
 
-            s.close();
+            s.close(); // release the Scanner
         } catch (Exception e) {
             // Common causes: server not running, rmiregistry not started,
             // or wrong host name. Printing the error helps debug.
-            System.out.println(e);
+            System.out.println(e); // dump the exception for debugging
         }
     }
 }

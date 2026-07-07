@@ -22,32 +22,32 @@ def startSendingTime(slave_client):
     # clock to the master every 5s so the master can measure the
     # offset (master_time - this_time).
     while True:
-        slave_client.send(str(datetime.datetime.now()).encode())
-        print("Recent time sent successfully", end="\n\n")
-        time.sleep(5)
+        slave_client.send(str(datetime.datetime.now()).encode())  # send current local time as text
+        print("Recent time sent successfully", end="\n\n")  # confirm the send happened
+        time.sleep(5)  # matches the master's expected 5s cadence
 
 def startReceivingTime(slave_client):
     # Runs forever in its own thread: blocks on recv() until the
     # master's sync thread pushes a new corrected time, then prints it.
     while True:
         synchronized_time = datetime.datetime.fromisoformat(
-            slave_client.recv(1024).decode())
-        print("Synchronized time at the client is: " + str(synchronized_time), end="\n\n")
+            slave_client.recv(1024).decode())  # blocks until master sends a correction, parse it
+        print("Synchronized time at the client is: " + str(synchronized_time), end="\n\n")  # show the result
 
 def initiateSlaveClient(port=2050):
     # Connects to the master on localhost:2050, then starts the
     # send and receive loops as separate threads so this slave can
     # simultaneously report its clock and listen for corrections.
-    slave_client = socket.socket()
-    slave_client.connect(('127.0.0.1', port))
+    slave_client = socket.socket()  # default TCP/IPv4 socket
+    slave_client.connect(('127.0.0.1', port))  # dial the master on localhost:2050
 
     print("Starting to send time to server\n")
-    send_time_thread = threading.Thread(target=startSendingTime, args=(slave_client,))
+    send_time_thread = threading.Thread(target=startSendingTime, args=(slave_client,))  # outbound loop
     send_time_thread.start()
 
     print("Starting to receive synchronized time from server\n")
-    receive_time_thread = threading.Thread(target=startReceivingTime, args=(slave_client,))
+    receive_time_thread = threading.Thread(target=startReceivingTime, args=(slave_client,))  # inbound loop
     receive_time_thread.start()
 
 if __name__ == '__main__':
-    initiateSlaveClient(port=2050)
+    initiateSlaveClient(port=2050)  # entry point: connect to the master on port 2050

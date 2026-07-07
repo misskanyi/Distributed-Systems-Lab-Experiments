@@ -11,15 +11,15 @@
 //   for us - sockets, marshalling, threads, etc.).
 // ============================================================
 
-import java.rmi.*;
-import java.rmi.server.*;
+import java.rmi.*; // RemoteException
+import java.rmi.server.*; // UnicastRemoteObject
 
-public class Servant extends UnicastRemoteObject implements ServerInterface {
+public class Servant extends UnicastRemoteObject implements ServerInterface { // extends to auto-export over RMI
 
     // Constructor must throw RemoteException because the parent
     // (UnicastRemoteObject) can fail while exporting the object.
     protected Servant() throws RemoteException {
-        super();
+        super(); // exports this object, starting a listener thread for incoming RMI calls
     }
 
     // Actual logic the client triggers remotely.
@@ -27,6 +27,6 @@ public class Servant extends UnicastRemoteObject implements ServerInterface {
     // SERVER's JVM, not the client's.
     @Override
     public String concat(String a, String b) throws RemoteException {
-        return a + b;
+        return a + b; // real work happens here, on the server
     }
 }
