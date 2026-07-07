@@ -1,0 +1,28 @@
+// ============================================================
+// Assignment 3: CORBA - Interface Definition Language (IDL)
+// ------------------------------------------------------------
+// CORBA is LANGUAGE-NEUTRAL: a client in Java can talk to a
+// server in C++ (or any language). To make that possible, we
+// describe the methods in a neutral language called IDL.
+//
+// The 'idlj' tool then GENERATES Java helper files (stubs,
+// helpers, holders) inside the Calculator/ folder. Those
+// generated files do all the network plumbing for us.
+//
+// Compile this file with:
+//      idlj -fall Calculator.idl
+// ============================================================
+
+module Calculator {                          // becomes a Java package
+    interface Calc {                         // becomes a Java interface
+
+        // Performs an arithmetic operation on the server.
+        // opcode: 1=add, 2=subtract, 3=multiply, 4=divide
+        // 'in' means the parameter goes FROM client TO server.
+        long calculate(in long opcode, in long op1, in long op2);
+
+        // 'oneway' = fire-and-forget: client doesn't wait for a
+        // response. Used here to tell the server to shut itself down.
+        oneway void exit();
+    };
+};
